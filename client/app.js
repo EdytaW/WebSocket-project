@@ -7,7 +7,8 @@ const messageContentInput = document.getElementById('message-content');
 let userName = '';
 const socket = io();
 
-socket.on('message', ({ author, content }) => addMessage(author, content))
+socket.on('message', ({ author, content }) => addMessage(author, content));
+
 const login = function (event) {
     event.preventDefault();
     if (!userNameInput.value.length) {
@@ -16,6 +17,12 @@ const login = function (event) {
       userName = userNameInput.value;
       loginForm.classList.remove('show');
       messagesSection.classList.add('show');
+      socket.emit('join', { name: userName, id: socket.id });
+      addMessage('Chat Bot', `${userName} has joined the conversation!`);
+      socket.emit('message', {
+        author: 'Chat Bot',
+        content: `${userName} has joined the conversation!`,
+    });
     }
   };
   
