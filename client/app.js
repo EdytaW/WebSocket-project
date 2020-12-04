@@ -18,7 +18,7 @@ const login = function (event) {
       loginForm.classList.remove('show');
       messagesSection.classList.add('show');
       socket.emit('join', { name: userName, id: socket.id });
-      addMessage('Chat Bot', `${userName} has joined the conversation!`);
+      // addMessage('Chat Bot', `${userName} has joined the conversation!`);
       socket.emit('message', {
         author: 'Chat Bot',
         content: `${userName} has joined the conversation!`,
