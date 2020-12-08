@@ -17,25 +17,29 @@ const io = socket(server);
 
 io.on('connection', (socket) => {
   console.log('New client! Its id – ' + socket.id);
-socket.on('message', (message) => {
-  console.log('Oh, I\'ve got something from ' + socket.id);
-  messages.push(message);
-  socket.broadcast.emit('message', message);
+  socket.on('newMessage', (message) => {
+    console.log('Oh, I\'ve got something from ' + socket.id);
+    messages.push(message);
+    socket.broadcast.emit('message', message);
 });
 
   socket.on('join', (user) => {
     console.log('Oh, we have a new user ' + socket.id);
     users.push(user);
+    socket.broadcast.emit('message', {
+      author: 'Chat Bot',
+      content: `${user.name} has joined the conversation!`
+    })
     console.log(users);
   });
  
    socket.on('disconnect', () => {
     console.log('Oh, socket ' + socket.id + ' has left');
-    const user = users.filter((user) => user.id == socket.id);
+    const user = users.find((user) => user.id == socket.id);
     const index = users.indexOf(user);
     socket.broadcast.emit('message', {
       author: 'Chat Bot',
-      content: `${user[0].name} has left the conversation... :(`,
+      content: `${user && user.name} has left the conversation... :(`,
     });
     users.splice(index, 1);
     });

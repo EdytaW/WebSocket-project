@@ -54,7 +54,7 @@ const login = function (event) {
     }
     else {
       addMessage(userName, messageContent);
-      socket.emit('message', { author: userName, content: messageContent })
+      socket.emit('newMessage', { author: userName, content: messageContent })
       messageContentInput.value = '';
     }
   
